@@ -37,11 +37,6 @@ resource "random_string" "random" {
   numeric   = false
 }
 
-resource "aws_iam_instance_profile" "ec2_profile" {
-  name = var.aws_resource_identifier
-  role = aws_iam_role.ec2_role.name
-}
-
 data "aws_ami" "ubuntu" {
   most_recent = true
   filter {
@@ -65,7 +60,6 @@ resource "aws_instance" "server" {
   vpc_security_group_ids      = [aws_security_group.ec2_security_group.id]
   key_name                    = aws_key_pair.aws_key.key_name
   monitoring                  = true
-  iam_instance_profile        = aws_iam_instance_profile.ec2_profile.name
   root_block_device {
     volume_size = tonumber(var.ec2_volume_size)
   }
